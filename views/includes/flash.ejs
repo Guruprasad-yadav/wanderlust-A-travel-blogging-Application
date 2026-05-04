@@ -1,0 +1,32 @@
+<% if (success && success.length > 0) { %>
+  <div class="d-flex justify-content-center mt-4">
+    <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-3 px-4 py-3 d-flex align-items-center" role="alert" style="max-width: 500px; width: 100%;">
+    <!-- Icon -->
+    <i class="bi bi-check-circle-fill me-3 fs-5"></i>
+    <!-- Message -->
+    <div class="flex-grow-1 fw-semibold">
+        <%= success %>
+    </div>
+    <!-- Close Button -->
+    <button type="button" class="btn-close ms-3" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+<% } %>
+
+
+<% if (error && error.length > 0) { %>
+  <div class="d-flex justify-content-center mt-3">
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm rounded-3 px-4 py-3 d-flex align-items-center" role="alert" style="max-width: 500px; width: 100%;">
+    <!-- Icon -->
+    <i class="bi bi-exclamation-circle-fill me-3 fs-5"></i>
+
+    <!-- Message -->
+    <div class="flex-grow-1 fw-semibold">
+        <%= error %>
+    </div>
+    <!-- Close Button -->
+    <button type="button" class="btn-close ms-3" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+<% } %>
+

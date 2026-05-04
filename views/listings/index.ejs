@@ -1,0 +1,94 @@
+<% layout ("/layouts/boilerplate")%>
+  
+<div class="container mt-5">
+  <div class="row g-4">
+
+    <% if (listings.length === 0) { %>
+
+      <div class="col-12 text-center">
+        <h4 class="text-muted">No Listings Found</h4>
+      </div>
+
+    <% } else { %>
+
+      <% for (let listing of listings) { %>
+
+        <% 
+          let isMatch = false;
+
+          if (search) {
+            let s = search.toLowerCase();
+
+            isMatch =
+              listing.title.toLowerCase().includes(s) ||
+              listing.location.toLowerCase().includes(s) ||
+              listing.country.toLowerCase().includes(s);
+          } else {
+            isMatch = true;
+          }
+        %>
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+          <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+
+            <div class="card listing-card h-100 border-0 shadow-sm 
+              <%= search ? (isMatch ? 'highlight' : 'blur') : '' %>">
+
+              <img src="<%= listing.image.url %>" 
+                   class="card-img-top rounded-top"
+                   style="height: 250px; object-fit: cover;">
+
+              <div class="card-body m-2 d-flex flex-column">
+
+                <h6 class="card-title fw-semibold mb-1">
+                  <% if (search && isMatch) { %>
+                    <span class="bg-warning px-2 rounded">
+                      <%= listing.title %>
+                    </span>
+                  <% } else { %>
+                    <%= listing.title %>
+                  <% } %>
+                </h6>
+
+                <!-- ✅ Show location highlight -->
+                <p class="text-muted mb-1">
+                  <% if (search && isMatch) { %>
+                    <span class="bg-warning px-2 rounded">
+                      <%= listing.location %>, <%= listing.country %>
+                    </span>
+                  <% } else { %>
+                    <%= listing.location %>, <%= listing.country %>
+                  <% } %>
+                </p>
+
+                <p class="card-text text-muted">
+                  ₹ <%= listing.price.toLocaleString("en-IN") %>/night
+                </p>
+
+              </div>
+            </div>
+
+          </a>
+
+        </div>
+
+      <% } %>
+
+    <% } %>
+
+  </div>
+</div>
+
+<style>
+  .highlight {
+  transform: scale(1.03);
+  border: 2px solid #28a745;
+}
+
+.blur {
+  filter: blur(3px);
+  opacity: 0.4;
+}
+
+</style>

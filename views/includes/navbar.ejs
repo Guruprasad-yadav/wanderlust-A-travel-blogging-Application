@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-2">
+  <div class="container">
+
+    <!-- Logo (UNCHANGED) -->
+    <a class="navbar-brand d-flex align-items-center gap-3 logo-hover" href="/listings">
+      <i class="fa-brands fa-airbnb logo-icon"></i>
+      <span class="fw-bold logo-text">Wanderlust</span>
+    </a>
+
+    <!-- Toggle -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- Left -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold text-dark nav-hover" href="/listings">
+            Explore
+          </a>
+        </li>
+      </ul>
+
+      <!-- ✅ Search -->
+      <form class="d-flex mx-lg-4 my-2 my-lg-0" action="/listings" method="GET">
+        <div class="input-group rounded-pill shadow-sm overflow-hidden">
+          <input 
+            class="form-control border-0 px-3"
+            type="search"
+            name="search"
+            placeholder="Search destinations..."
+          >
+          <button class="btn btn-dark px-3" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Right -->
+      <div class="d-flex align-items-center gap-3 ms-lg-3">
+
+        <a class="nav-link fw-semibold text-dark nav-hover" href="/listings/new">
+          Airbnb your home
+        </a>
+
+        <% if(!currUser) {%>
+          <a href="/signup" class="btn btn-outline-dark rounded-pill px-3 login-btn">
+            Sign up
+          </a>
+
+          <a href="/login" class="btn btn-success rounded-pill px-3">
+            Login
+          </a>
+        <%}%>
+
+        <% if(currUser) {%>
+          <a href="/logout" class="btn btn-danger rounded-pill px-3">
+            Logout
+          </a>
+        <%}%>
+
+      </div>
+
+    </div>
+  </div>
+</nav>
