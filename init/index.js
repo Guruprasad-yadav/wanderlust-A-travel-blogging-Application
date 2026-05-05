@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 const initData=require("./data.js")
 const Listing=require("../models/listing.js")
 
-require("dotenv").config({ path: require("path").resolve(__dirname, "../.env") });
-console.log("ENV VALUE:", process.env.ATLAS_DB_URL);
-
-const dbUrl=process.env.ATLASDB_URL||"mongodb+srv://delta-student:6ClfcrN0JQVMGhRL@cluster0.xfpjin1.mongodb.net/?appName=Cluster0";
+const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust-Blogging";
 
 main()
   .then(() => {
@@ -16,12 +13,12 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(dbUrl);
+  await mongoose.connect(MONGO_URL);
 }
 
 const initDB = async () => {
   await Listing.deleteMany({});
-  initData.data=initData.data.map((obj)=>({...obj, owner:"69f9db65c06edba765725d20"}))
+  initData.data=initData.data.map((obj)=>({...obj,owner:"69eb29ba08ea767d57917e91"}))
   await Listing.insertMany(initData.data);
   console.log("data was initialized");
 };

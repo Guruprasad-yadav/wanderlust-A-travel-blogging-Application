@@ -20,9 +20,9 @@
 
         <div class="card-body text-center">
 
-          <!-- Owner (FIXED) -->
+          <!-- Owner -->
           <p class="text-start mb-3">
-            Owned by @<i><%= listing.owner?.username || "Unknown" %></i>
+            Owned by @<i><%= listing.owner.username %></i>
           </p>
 
           <!-- Description -->
@@ -43,8 +43,7 @@
             </li>
           </ul>
 
-          <!-- Ownership Check (FIXED) -->
-          <% if (currUser && listing.owner && currUser._id.equals(listing.owner._id)) { %>
+          <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
           <div class="d-flex justify-content-center gap-3">
             <a class="btn btn-success px-4"
                href="/listings/<%= listing._id %>/edit">
@@ -143,9 +142,9 @@
         <div class="col-12 col-sm-6 col-md-4">
           <div class="card review-card h-100 p-3 d-flex flex-column">
 
-            <!-- User (FIXED) -->
+            <!-- User -->
             <h6 class="fw-semibold mb-1 text-dark">
-              @<%= review.author?.username || "User" %>
+              @<%= review.author.username %>
             </h6>
 
             <!-- Stars -->
@@ -168,8 +167,8 @@
               <% } %>
             </p>
 
-            <!-- Delete (FIXED) -->
-            <% if (currUser && review.author && currUser._id.equals(review.author._id)) { %>
+            <!-- Delete -->
+            <% if(currUser && currUser._id.equals(review.author._id)) { %>
               <form method="POST" 
                     action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
                 <button class="btn btn-outline-danger btn-sm mt-auto">
@@ -186,7 +185,61 @@
     <% } else { %>
 
       <p class="text-center text-muted">No reviews yet</p>
+
     <% } %>
 
   </div>
 </div>
+
+<style>
+  /* Clean review card */
+.review-card {
+  border: none;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Smaller stars */
+.small-stars {
+  font-size: 13px;
+  color: #000 !important;
+}
+
+.small-stars::before {
+  letter-spacing: 1.5px;
+}
+
+/* Show more */
+.show-toggle {
+  cursor: pointer;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".show-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const card = btn.closest(".card");
+      const shortText = card.querySelector(".short-text");
+      const fullText = card.querySelector(".full-text");
+
+      if (fullText.classList.contains("d-none")) {
+        fullText.classList.remove("d-none");
+        shortText.classList.add("d-none");
+        btn.textContent = " Show less";
+      } else {
+        fullText.classList.add("d-none");
+        shortText.classList.remove("d-none");
+        btn.textContent = " Show more";
+      }
+
+    });
+  });
+});
+</script>
