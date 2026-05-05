@@ -2,8 +2,6 @@ if(process.env.NODE_ENV != "production") {
     require('dotenv').config()
 }
 
-
-
 const express=require("express")
 const app=express()
 const mongoose= require("mongoose")
@@ -23,14 +21,16 @@ const reviewRouter=require("./routes/review.js")
 const userRouter=require("./routes/user.js")
 
 const session=require('express-session');
+const MongoStore = require("connect-mongo").default;
 const flash=require("connect-flash");
 const passport=require("passport")  //ఇది main authentication library
-const LocalStrategy=require("passport-local")   //normal local metthod...LocalStrategy = username + password login system
+const LocalStrategy=require("passport-local");   //normal local metthod...LocalStrategy = username + password login system
 
 
 // connecting mongoDB database
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust-Blogging";
+// const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust-Blogging";
 
+const dbUrl=process.env.ATLASDB_URL;
 main()
     .then(()=>{
         console.log("connected to DB")
@@ -40,7 +40,7 @@ main()
     })
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 }
 
 app.set("view engine","ejs");
@@ -50,8 +50,21 @@ app.use(methodOverride("_method"))
 app.engine('ejs',ejsMate)
 app.use(express.static(path.join(__dirname,'/public')))
 
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 3600,
+});
+
+store.on("error", (err) => {   // ✅ add err parameter
+  console.log("❌ ERROR IN MONGO SESSION STORE:", err);
+});
 const sessionOptions={
-    secret:"mysupersecretcode", //Session data ని encrypt / sign చేయడానికి ఉపయోగిస్తారు like security purpose...
+    store,
+    secret:process.env.SECRET, //Session data ని encrypt / sign చేయడానికి ఉపయోగిస్తారు like security purpose...
     resave:false, //false → session change అయినప్పుడు మాత్రమే save అవుతుంది ✅
     saveUninitailized: true,
     cookie:{
@@ -65,7 +78,7 @@ app.get('/',(req,res)=>{
     res.send("i am root..")
 })
 
- 
+
 app.use(session(sessionOptions));
 // Web apps “stateless” ఉంటాయి (server user ని remember చేయదు by default)
 // కానీ మనం user login, cart, preferences etc. remember చేయాలి
