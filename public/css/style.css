@@ -1,10 +1,19 @@
+
 body {
     margin:0;
     padding:0;
-    font-family: 'Lobster', cursive !important;
+    font-family: "Airbnb Cereal VF", Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;
     display: flex !important;
     flex-direction:column !important;
     min-height: 100vh !important;
+}
+h1, h2, h3 {
+  font-weight: 600 !important;
+}
+
+p {
+  font-weight: 500 !important;
+  color: #555 !important;
 }
 
 a{
@@ -202,6 +211,57 @@ a{
 }
 
 
+
+  .form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: #0b0c0b;
+  font-weight: 600;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(4, 13, 29, 0.5) !important;
+}
+
+.card {
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.95);
+}
+
+.img-fluid {
+  transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+  transform: scale(1.02);
+}
+
+
+
+/* Custom enhancements */
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+  color: #0b0c0b;
+  font-weight: 600;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(4, 13, 29, 0.5) !important;
+}
+
+.card {
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.95);
+}
+
+.img-fluid {
+  transition: transform 0.3s ease;
+}
+
+.img-fluid:hover {
+  transform: scale(1.02);
+}
 
 
 

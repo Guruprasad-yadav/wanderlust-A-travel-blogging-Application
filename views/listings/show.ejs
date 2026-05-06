@@ -21,12 +21,12 @@
         <div class="card-body text-center">
 
           <!-- Owner -->
-          <p class="text-start mb-3">
+          <p class="text-start text-muted mb-3">
             Owned by @<i><%= listing.owner.username %></i>
           </p>
 
           <!-- Description -->
-          <p class="text-muted px-3">
+          <p class="text-dark  px-4">
             <%= listing.description %>
           </p>
 
@@ -34,13 +34,13 @@
           <ul class="list-group list-group-flush mb-4 bg-transparent">
             <li class="list-group-item bg-transparent border-0">
               <b>Price:</b> ₹ <%= listing.price.toLocaleString("en-IN") %>
-            </li>
+            </li><hr class="w-25 mx-auto">
             <li class="list-group-item bg-transparent border-0">
               <b>Location:</b> <%= listing.location %>
-            </li>
+            </li><hr class="w-25  mx-auto">
             <li class="list-group-item bg-transparent border-0">
               <b>Country:</b> <%= listing.country %>
-            </li>
+            </li><hr class="w-25 mx-auto">
           </ul>
 
           <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
@@ -51,7 +51,7 @@
             </a>
 
             <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-              <button class="btn btn-danger px-4">
+              <button class="btn btn-dark px-4">
                 Delete
               </button>
             </form>
@@ -63,18 +63,18 @@
 
     </div>
   </div>
-</div>
+
 
 <hr/>
 
 <% if(currUser) { %>
 <!-- Review Form -->
-<div class="row justify-content-center mt-5">
-  <div class="col-lg-6">
+<div class="row justify-content-center mt-5 mb-5">
+  <div class="col-lg-8 col-md-10 col-12">
 
-    <div class="card border-0 shadow-sm p-4">
+    <div class="card shadow p-5 rounded-4 bg-white border-0">
 
-      <h4 class="text-center fw-bold mb-4">Leave a Review</h4>
+      <h3 class="fw-bold mb-4 text-center">Leave a Review</h3><hr/>
 
       <form action="/listings/<%= listing._id %>/reviews" 
             method="POST" 
@@ -83,55 +83,62 @@
 
         <!-- Rating -->
         <div class="mb-4">
-          <label class="form-label">Rating</label>
+          <label class="form-label fw-semibold">Rating</label>
 
-          <fieldset class="starability-basic">
-            <input type="radio" id="rate1" name="review[rating]" value="1" />
-            <label for="rate1">1 star</label>
+          <div class="py-2">
+            <fieldset class="starability-basic">
 
-            <input type="radio" id="rate2" name="review[rating]" value="2" />
-            <label for="rate2">2 stars</label>
+              <input type="radio" id="rate1" name="review[rating]" value="1" />
+              <label for="rate1">1 star</label>
 
-            <input type="radio" id="rate3" name="review[rating]" value="3" />
-            <label for="rate3">3 stars</label>
+              <input type="radio" id="rate2" name="review[rating]" value="2" />
+              <label for="rate2">2 stars</label>
 
-            <input type="radio" id="rate4" name="review[rating]" value="4" />
-            <label for="rate4">4 stars</label>
+              <input type="radio" id="rate3" name="review[rating]" value="3" />
+              <label for="rate3">3 stars</label>
 
-            <input type="radio" id="rate5" name="review[rating]" value="5" checked />
-            <label for="rate5">5 stars</label>
-          </fieldset>
+              <input type="radio" id="rate4" name="review[rating]" value="4" />
+              <label for="rate4">4 stars</label>
+
+              <input type="radio" id="rate5" name="review[rating]" value="5" checked />
+              <label for="rate5">5 stars</label>
+
+            </fieldset>
+          </div>
         </div>
 
         <!-- Comment -->
         <div class="mb-4">
-          <label for="comment" class="form-label">Comments</label>
-          <textarea class="form-control" 
-                    name="review[comment]" 
-                    id="comment" 
-                    rows="4" 
+          <label for="comment" class="form-label fw-semibold">Comments</label>
+
+          <textarea class="form-control text-muted rounded-3 shadow-sm p-3"
+                    name="review[comment]"
+                    id="comment"
+                    rows="4"
+                    placeholder="What did you like or dislike?"
                     required></textarea>
 
-          <div class="invalid-feedback">
-            Please add some comments
-          </div>
+          <div class="invalid-feedback">Please add a review comment.</div>
         </div>
 
         <!-- Submit -->
         <div class="text-center">
-          <button class="btn btn-primary px-4">Submit</button>
+          <button type="submit" class="btn btn-dark px-5 py-2 rounded-pill shadow">
+            Submit Review
+          </button>
         </div>
 
       </form>
 
     </div>
+
   </div>
 </div>
 <% } %>
 
 <!-- Reviews Section -->
 <div class="container mt-5">
-  <h4 class="fw-bold mb-4 text-center">All Reviews</h4>
+  <h3 class="fw-bold mb-4 text-center">All Reviews</h3>
 
   <div class="row g-3">
 
@@ -140,44 +147,46 @@
       <% for (let review of listing.reviews) { %>
 
         <div class="col-12 col-sm-6 col-md-4">
-          <div class="card review-card h-100 p-3 d-flex flex-column">
+        <!-- Updated Card classes -->
+<div class="card review-card h-100 p-3 d-flex flex-column shadow border-0 rounded-4">
 
-            <!-- User -->
-            <h6 class="fw-semibold mb-1 text-dark">
-              @<%= review.author.username %>
-            </h6>
+  <!-- User -->
+  <h6 class="fw-semibold mb-1 text-dark">
+    @<%= review.author.username %>
+  </h6>
 
-            <!-- Stars -->
-            <p class="starability-result small-stars mb-2" data-rating="<%= review.rating %>"></p>
+  <!-- Stars -->
+  <p class="starability-result small-stars mb-3 fs-4"
+     data-rating="<%= review.rating %>"></p>
 
-            <!-- Comment -->
-            <p class="text-muted small flex-grow-1 mb-2">
-              <span class="short-text">
-                <%= review.comment.slice(0, 100) %>
-              </span>
+  <!-- Comment -->
+  <p class="text-muted small flex-grow-1 mb-2">
+    <span class="short-text">
+      <%= review.comment.slice(0, 100) %>
+    </span>
 
-              <span class="full-text d-none">
-                <%= review.comment %>
-              </span>
+    <span class="full-text d-none">
+      <%= review.comment %>
+    </span>
 
-              <% if (review.comment.length > 100) { %>
-                <span class="show-toggle text-decoration-underline fw-semibold ms-1">
-                  Show more
-                </span>
-              <% } %>
-            </p>
+    <% if (review.comment.length > 100) { %>
+      <span class="show-toggle text-decoration-underline fw-semibold ms-1">
+        Show more
+      </span>
+    <% } %>
+  </p>
 
-            <!-- Delete -->
-            <% if(currUser && currUser._id.equals(review.author._id)) { %>
-              <form method="POST" 
-                    action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                <button class="btn btn-outline-danger btn-sm mt-auto">
-                  Delete
-                </button>
-              </form>
-            <% } %>
+  <!-- Delete -->
+  <% if(currUser && currUser._id.equals(review.author._id)) { %>
+    <form method="POST"
+          action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+      <button class="btn btn-outline-danger btn-sm mt-auto">
+        Delete
+      </button>
+    </form>
+  <% } %>
 
-          </div>
+</div>
         </div>
 
       <% } %>
@@ -190,56 +199,270 @@
 
   </div>
 </div>
+<hr>
+<!-- ================= THINGS TO KNOW ================= -->
+<div class="container text-start my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card border-0 shadow-none p-4">
+        <h3 class="fw-bold mb-4">Things to know</h3>
+        <div class="row g-4">
+          <!-- Cancellation -->
+          <div class="col-md-4">
+            <div class="p-3 border shadow-none rounded h-100">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fa-regular text-muted fa-calendar-xmark fs-4 text-dark me-2"></i>
+                <h6 class="fw-semibold mb-0">Cancellation</h6>
+              </div>
+              <p class="text-muted fw-normal mb-2">
+                Free cancellation for 24 hours. Cancel before 29 May for a partial refund.
+                Review this host’s full policy for details.
+              </p>
+              <a href="#" class="text-dark small text-decoration-underline"
+                 data-bs-toggle="modal"
+                 data-bs-target="#cancelModal">
+                Learn more
+              </a>
+            </div>
+          </div>
 
-<style>
-  /* Clean review card */
-.review-card {
-  border: none;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-}
+          <!-- House Rules -->
+          <div class="col-md-4">
+            <div class="p-3 border shadow-none rounded h-100">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fa-solid text-muted fa-house fs-4 text-dark me-2"></i>
+                <h6 class="fw-semibold mb-0">House Rules</h6>
+              </div>
+              <p class="text-muted fw-normal mb-2">
+                Check-in: 1:00 pm – 9:00 pm<br/>
+                Checkout before 10:00 am<br/>
+                1 guest maximum
+              </p>
+              <a href="#" class="text-dark small text-decoration-underline"
+                 data-bs-toggle="modal"
+                 data-bs-target="#houseRulesModal">
+                Learn more
+              </a>
+            </div>
+          </div>
 
-.review-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
+          <!-- Safety -->
+          <div class="col-md-4">
+            <div class="p-3 border shadow-none rounded h-100">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fa-solid text-muted fa-shield-halved fs-4 text-dark me-2"></i>
+                <h6 class="fw-semibold mb-0">Safety</h6>
+              </div>
+              <p class="text-muted fw-normal mb-2">
+                Carbon monoxide alarm not reported<br/>
+                Smoke alarm not reported<br/>
+                Exterior security cameras on property
+              </p>
+              <a href="#" class="text-dark small text-decoration-underline"
+                 data-bs-toggle="modal"
+                 data-bs-target="#safetyModal">
+                Learn more
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-/* Smaller stars */
-.small-stars {
-  font-size: 13px;
-  color: #000 !important;
-}
+<!-- ================= CANCELLATION MODAL ================= -->
+<div class="modal fade" id="cancelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-sm">
+      <!-- Header -->
+      <div class="modal-header border-0 px-4 pt-4 pb-2">
+        <h2 class="modal-title fw-bold fs-4">Cancellation policy</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- Body -->
+      <div class="modal-body px-4 pb-4">
+        <!-- 1 -->
+        <div class="mb-4 row align-items-start">
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">Within</h5>
+            <p class="text-muted mb-0">
+              24 hours<br>
+              after booking
+            </p>
+          </div>
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">Full refund</h5>
+            <p class="text-muted mb-0">
+              Get back 100% of what you paid.
+            </p>
+          </div>
+        </div>
+        <hr>
+        <!-- 2 -->
+        <div class="mb-4 row align-items-start">
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">Before</h5>
+            <p class="text-muted mb-0">
+              29 May<br>
+              1:00 pm
+            </p>
+          </div>
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">Partial refund</h5>
+            <p class="text-muted mb-0">
+              Get back 50% of every night.<br>
+              No refund of the service fee.
+            </p>
+          </div>
+        </div>
+        <hr>
+        <!-- 3 -->
+        <div class="mb-2 row align-items-start">
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">After</h5>
+            <p class="text-muted mb-0">
+              29 May<br>
+              1:00 pm
+            </p>
+          </div>
+          <div class="col-6">
+            <h5 class="fw-semibold text-dark mb-1">No refund</h5>
+            <p class="text-muted mb-0">
+              This reservation is non-refundable.
+            </p>
+          </div>
+        </div>
+        <hr>
+        <p>Time shown is based on the location of the listing.</p>
+        <div>
+          <h5>Refund eligibility</h5>
+          <p>If you're making scheduled payments, your refund or amount due will depend on how much you've paid at the time of cancellation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-.small-stars::before {
-  letter-spacing: 1.5px;
-}
+<!-- ================= HOUSE RULES MODAL ================= -->
+<div class="modal fade" id="houseRulesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content rounded-4 shadow-sm border-0">
+      <div class="modal-header border-0 pb-0 px-4 pt-4">
+        <h2 class="modal-title fw-bold fs-3">House rules</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 py-3">
+        <p class="text-muted mb-4 fs-6">
+          You'll be staying in someone's home, so please treat it with care and respect.
+        </p>
+        <h5 class="fw-bold mb-3 fs-5">Checking in and out</h5>
+        <div class="list-unstyled text-muted mb-4 fs-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-regular fa-clock fs-5"></i>
+            <span>Check-in: 1:00 pm – 9:00 pm</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-regular fa-clock fs-5"></i>
+            <span>Checkout before 10:00 am</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-door-closed fs-5"></i>
+            <span>Self check-in with building staff</span>
+          </div>
+        </div>
+        <h5 class="fw-bold mb-3 fs-5">During your stay</h5>
+        <div class="list-unstyled text-muted mb-0 fs-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-user-group fs-5"></i>
+            <span>1 guest maximum</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-ban text-dark fs-5"></i>
+            <span>No pets</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-moon fs-5"></i>
+            <span>Quiet hours: 9pm – 6am</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-circle-xmark fs-5"></i>
+            <span>No parties or events</span>
+          </div>
+          <hr>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-smoking fs-5"></i>
+            <span>Smoking is allowed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-/* Show more */
-.show-toggle {
-  cursor: pointer;
-}
-</style>
+<!-- ================= SAFETY MODAL ================= -->
+<div class="modal fade" id="safetyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-sm">
+      <!-- Header -->
+      <div class="modal-header px-4 pt-4 border-0">
+        <h2 class="modal-title fw-bold">Safety & property</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- Body -->
+      <div class="modal-body px-4 py-3">
+        <p class="text-muted mb-4">
+          Avoid surprises by looking over these important details about your host's property.
+        </p>
+        <!-- Safety considerations -->
+        <h5 class="fw-bold mb-3">Safety considerations</h5>
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <i class="fa-solid fa-child text-dark"></i>
+          <span>Not suitable for children and infants</span>
+        </div>
+        <hr>
+        <!-- Safety devices -->
+        <h5 class="fw-bold mb-3 mt-3">Safety devices</h5>
+        <!-- Item 1 -->
+        <div class="d-flex gap-3 mb-3">
+          <i class="fa-solid fa-video text-dark mt-1"></i>
+          <div>
+            <h6 class="fw-semibold mb-1">Exterior security cameras on property</h6>
+            <p class="text-muted mb-0 small">
+              "For your safety, exterior security cameras monitor all areas of the property except the private garden, which remains completely exclusive and unmonitored for your privacy."
+            </p>
+          </div>
+        </div>
+        <hr>
+        <!-- Item 2 -->
+        <div class="d-flex gap-3 mb-3">
+          <i class="fa-solid fa-triangle-exclamation text-dark mt-1"></i>
+          <div>
+            <h6 class="fw-semibold mb-1">Carbon monoxide alarm not reported</h6>
+            <p class="text-muted mb-0 small">
+              The Host hasn't reported a carbon monoxide alarm on the property. We suggest bringing a portable detector for your trip.
+            </p>
+          </div>
+        </div>
+        <hr>
+        <!-- Item 3 -->
+        <div class="d-flex gap-3">
+          <i class="fa-solid fa-triangle-exclamation text-dark mt-1"></i>
+          <div>
+            <h6 class="fw-semibold mb-1">Smoke alarm not reported</h6>
+            <p class="text-muted mb-0 small">
+              The Host hasn't reported a smoke alarm on the property. We suggest bringing a portable detector for your trip.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".show-toggle").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const card = btn.closest(".card");
-      const shortText = card.querySelector(".short-text");
-      const fullText = card.querySelector(".full-text");
-
-      if (fullText.classList.contains("d-none")) {
-        fullText.classList.remove("d-none");
-        shortText.classList.add("d-none");
-        btn.textContent = " Show less";
-      } else {
-        fullText.classList.add("d-none");
-        shortText.classList.remove("d-none");
-        btn.textContent = " Show more";
-      }
-
-    });
-  });
-});
-</script>
+</div>
