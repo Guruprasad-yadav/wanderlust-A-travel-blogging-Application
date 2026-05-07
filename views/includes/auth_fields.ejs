@@ -1,0 +1,141 @@
+<%# views/includes/auth_fields.ejs %>
+
+<!-- GENERAL ERROR -->
+<% if (typeof errors !== 'undefined' && errors.general) { %>
+<div class="alert alert-danger rounded-3 shadow-sm mb-3">
+  <i class="fa-solid fa-circle-exclamation me-2"></i>
+  <%= errors.general %>
+</div>
+<% } %>
+
+<!-- USERNAME -->
+<div class="mb-3">
+  <label for="username" class="form-label fw-semibold">Username</label>
+  <div class="input-group has-validation">
+    <!-- ICON -->
+    <span class="input-group-text" id="username-addon">@</span>
+    <!-- INPUT -->
+    <input 
+      type="text"
+      name="username"
+      id="username"
+      class="form-control <%= (typeof errors !== 'undefined' && errors.username) ? 'is-invalid' : '' %>"
+      placeholder="Enter username"
+      value="<%= (typeof formData !== 'undefined') ? formData.username : '' %>"
+      required
+      minlength="3"
+      maxlength="20"
+      pattern="^[a-zA-Z0-9_]{5,20}$"
+      aria-describedby="username-addon username-feedback username-error"
+    >
+    <!-- VALIDATION FEEDBACK -->
+    <div class="invalid-feedback" id="username-feedback">
+      Username must be 5-20 characters and contain only letters, numbers, and underscores.
+    </div>
+  </div>
+  <!-- BACKEND ERROR -->
+  <% if (typeof errors !== 'undefined' && errors.username) { %>
+    <div class="text-danger small mt-1" id="username-error">
+      <%= errors.username %>
+    </div>
+  <% } %>
+</div>
+
+<!-- EMAIL FIELD ONLY FOR SIGNUP -->
+<% if (typeof showEmail !== 'undefined' && showEmail === true) { %>
+<div class="mb-3">
+  <label for="email" class="form-label fw-semibold">Email</label>
+  <div class="input-group has-validation">
+    <!-- ICON -->
+    <span class="input-group-text" id="email-addon">
+      <i class="fa-solid fa-envelope"></i>
+    </span>
+    <!-- INPUT -->
+    <input 
+      type="email"
+      name="email"
+      id="email"
+      class="form-control <%= (typeof errors !== 'undefined' && errors.email) ? 'is-invalid' : '' %>"
+      placeholder="Enter email"
+      value="<%= (typeof formData !== 'undefined') ? formData.email : '' %>"
+      required
+      pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+      aria-describedby="email-addon email-feedback email-error"
+    >
+    <!-- VALIDATION FEEDBACK -->
+    <div class="invalid-feedback" id="email-feedback">
+      Please enter a valid email address.
+    </div>
+  </div>
+  <!-- BACKEND ERROR -->
+  <% if (typeof errors !== 'undefined' && errors.email) { %>
+    <div class="text-danger small mt-1" id="email-error">
+      <%= errors.email %>
+    </div>
+  <% } %>
+</div>
+<% } %>
+
+<!-- PASSWORD -->
+<div class="mb-3">
+  <label for="password" class="form-label fw-semibold">Password</label>
+  <div class="input-group has-validation">
+    <!-- ICON -->
+    <span class="input-group-text" id="password-addon">
+      <i class="fa-solid fa-lock"></i>
+    </span>
+    <!-- INPUT -->
+    <input 
+      type="password"
+      name="password"
+      id="password"
+      class="form-control <%= (typeof errors !== 'undefined' && errors.password) ? 'is-invalid' : '' %>"
+      placeholder="Enter password"
+      required
+      minlength="8"
+      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$"
+      aria-describedby="password-addon password-feedback password-error"
+    >
+    <!-- VALIDATION FEEDBACK -->
+    <div class="invalid-feedback" id="password-feedback">
+      Password must contain uppercase, lowercase, number, special character and minimum 8 characters.
+    </div>
+  </div>
+  <!-- BACKEND ERROR -->
+  <% if (typeof errors !== 'undefined' && errors.password) { %>
+    <div class="text-danger small mt-1" id="password-error">
+      <%= errors.password %>
+    </div>
+  <% } %>
+</div>
+
+
+
+
+<!-- BOOTSTRAP VALIDATION SCRIPT -->
+<script>
+(() => {
+
+  'use strict';
+
+  const forms = document.querySelectorAll('form');
+
+  Array.from(forms).forEach(form => {
+
+    form.addEventListener('submit', event => {
+
+      if (!form.checkValidity()) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+      }
+
+      form.classList.add('was-validated');
+
+    }, false);
+
+  });
+
+})();
+</script>

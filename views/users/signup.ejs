@@ -5,58 +5,35 @@
   <div class="card shadow-lg border-0 rounded-4 p-4" style="width: 100%; max-width: 450px;">
 
 <div class="text-center mb-4">
-  <h2 class="fw-bold">Create Account</h2>
+  <h2 class="fw-bold">Sign Up</h2><hr class="my-4 w-75 mx-auto rounded-pill" 
+     style="height: 2px; background: linear-gradient(90deg, #0e0f0e, #070707, #000000); border: none;">
 </div>
 
 <form action="/signup" method="POST" class="needs-validation" novalidate>
 
-  <!-- Username -->
-  <div class="form-floating mb-3">
-    <input 
-      type="text" 
-      class="form-control rounded-3" 
-      id="username" 
-      name="username" 
-      placeholder="Username"
-      required>
-    <label for="username">Username</label>
-    <div class="invalid-feedback">Please enter a username</div>
-  </div>
+  <%- include("../includes/auth_fields.ejs", { 
+    showEmail: true, 
+    showPasswordInstructions: true,
+    errors: errors,
+    formData: formData
+  }) %>
 
-  <!-- Email -->
-  <div class="form-floating mb-3">
-    <input 
-      type="email" 
-      class="form-control rounded-3" 
-      id="email" 
-      name="email" 
-      placeholder="Email"
-      required>
-    <label for="email">Email address</label>
-    <div class="invalid-feedback">Please enter a valid email</div>
-  </div>
-
-  <!-- Password -->
-  <div class="form-floating mb-4">
-    <input 
-      type="password" 
-      class="form-control rounded-3" 
-      id="password" 
-      name="password" 
-      placeholder="Password"
-      required>
-    <label for="password">Password</label>
-    <div class="invalid-feedback">Please enter a password</div>
-  </div>
+  <% if (errors.general) { %>
+    <div class="alert alert-danger py-2 mb-3" role="alert">
+      <%= errors.general %>
+    </div>
+  <% } %>
 
   <!-- Button -->
-  <div class="d-grid">
+  <div class="d-grid mt-4">
     <button class="btn btn-success btn-lg rounded-3">
-      Signup
+      Sign Up
     </button>
   </div>
 
 </form>
+
+
 
 <!-- Footer -->
 <div class="text-center mt-3">
@@ -69,5 +46,3 @@
   </div>
 
 </div>
-
-
