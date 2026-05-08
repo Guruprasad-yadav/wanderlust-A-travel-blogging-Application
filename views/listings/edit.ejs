@@ -1,5 +1,9 @@
 <% layout("/layouts/boilerplate") %>
+<script>
+  const mapToken="<%=process.env.MAP_TOKEN%>";
+  const listing=<%- JSON.stringify(listing) %>
 
+</script>
 <div class="container py-5">
   <div class="row justify-content-center">
     <div class="col-lg-7 col-xl-6 col-md-8">
