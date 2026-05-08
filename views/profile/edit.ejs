@@ -1,0 +1,440 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    body {
+        background: #f4f7fb;
+    }
+
+    .edit-profile-container {
+        min-height: 90vh;
+        padding: 60px 0;
+    }
+
+    .profile-edit-card {
+        background: #fff;
+        border-radius: 25px;
+        padding: 45px 35px;
+        border: 1px solid #f1f1f1;
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.08),
+            0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .profile-edit-card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.12),
+            0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .image-preview-container {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .preview-img {
+        width: 140px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .photo-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .btn-upload,
+    .btn-remove {
+        border: none;
+        padding: 10px 22px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .btn-upload {
+        background: linear-gradient(135deg, #fe424d, #ff6b75);
+        color: white;
+        box-shadow: 0 8px 20px rgba(254, 66, 77, 0.25);
+    }
+
+    .btn-upload:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(254, 66, 77, 0.35);
+    }
+
+    .btn-remove {
+        background: #f1f3f5;
+        color: #495057;
+    }
+
+    .btn-remove:hover {
+        background: #e9ecef;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .form-section {
+        background: #fff;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow:
+            0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 25px;
+        border: 1px solid #f2f2f2;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 0.92rem;
+    }
+
+    .form-control {
+        border-radius: 14px;
+        padding: 13px 16px;
+        border: 1px solid #dee2e6;
+        transition: all 0.3s ease;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #fe424d;
+        box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.12);
+    }
+
+    textarea.form-control {
+        resize: none;
+    }
+
+    .save-btn {
+        background: linear-gradient(135deg, #fe424d, #ff6b75);
+        color: white;
+        border: none;
+        padding: 13px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+        width: 100%;
+        transition: 0.3s ease;
+        box-shadow: 0 8px 20px rgba(254, 66, 77, 0.25);
+        margin-top: 10px;
+    }
+
+    .save-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(254, 66, 77, 0.35);
+    }
+
+    .back-link {
+        color: #6c757d;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #fe424d;
+    }
+
+    @media(max-width: 768px) {
+
+        .profile-edit-card {
+            padding: 30px 20px;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+        }
+
+        .preview-img {
+            width: 120px;
+            height: 120px;
+        }
+    }
+</style>
+
+<div class="edit-profile-container">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7 col-md-9">
+
+                <div class="profile-edit-card">
+
+                    <h2 class="form-title text-center mb-4">
+                        Edit Profile
+                    </h2>
+
+                    <form 
+                        action="/profile/edit?_method=PUT"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="needs-validation"
+                        novalidate
+                    >
+
+                        <!-- Profile Image -->
+                        <div class="image-preview-container">
+
+                            <img 
+                                src="<%= (user.profileImage && user.profileImage.url) 
+                                    ? user.profileImage.url 
+                                    : 'https://www.pngall.com/wp-content/uploads/5/Profile.png' %>"
+                                alt="Preview"
+                                id="profilePreview"
+                                class="preview-img"
+                            >
+
+                            <div class="photo-actions">
+
+                                <!-- Change Photo -->
+                                <div class="upload-btn-wrapper">
+
+                                    <button type="button" class="btn-upload">
+                                        <i class="fa-solid fa-camera me-2"></i>
+                                        Change Photo
+                                    </button>
+
+                                    <input 
+                                        type="file"
+                                        name="profileImage"
+                                        id="imageInput"
+                                        accept="image/*"
+                                    >
+
+                                </div>
+
+                                <!-- Remove Photo -->
+                                <button 
+                                    type="button"
+                                    class="btn-remove"
+                                    id="removePhotoBtn"
+                                >
+                                    <i class="fa-solid fa-trash me-2"></i>
+                                    Remove Photo
+                                </button>
+
+                            </div>
+
+                            <!-- Hidden Input -->
+                            <input 
+                                type="hidden"
+                                name="removeProfileImage"
+                                id="removeProfileImage"
+                                value="false"
+                            >
+
+                        </div>
+
+                        <!-- User Details -->
+                        <div class="form-section">
+
+                            <div class="mb-3">
+
+                                <label for="fullName" class="form-label">
+                                    Full Name
+                                </label>
+
+                                <input 
+                                    type="text"
+                                    name="fullName"
+                                    id="fullName"
+                                    class="form-control"
+                                    value="<%= user.fullName %>"
+                                    placeholder="Enter your full name"
+                                >
+
+                            </div>
+
+                            <div class="mb-0">
+
+                                <label for="bio" class="form-label">
+                                    Bio
+                                </label>
+
+                                <textarea 
+                                    name="bio"
+                                    id="bio"
+                                    rows="4"
+                                    class="form-control"
+                                    placeholder="Tell us about yourself"
+                                ><%= user.bio %></textarea>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="form-section">
+
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label for="phone" class="form-label">
+                                        Phone Number
+                                    </label>
+
+                                    <input 
+                                        type="text"
+                                        name="phone"
+                                        id="phone"
+                                        class="form-control"
+                                        value="<%= user.phone %>"
+                                        placeholder="Your phone number"
+                                    >
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label for="location" class="form-label">
+                                        Location
+                                    </label>
+
+                                    <input 
+                                        type="text"
+                                        name="location"
+                                        id="location"
+                                        class="form-control"
+                                        value="<%= user.location %>"
+                                        placeholder="City, Country"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Save -->
+                        <button type="submit" class="save-btn">
+
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            Save Changes
+
+                        </button>
+
+                        <!-- Back -->
+                        <div class="text-center mt-4">
+
+                            <a href="/profile" class="back-link">
+
+                                <i class="fa-solid fa-arrow-left me-2"></i>
+                                Back to Profile
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const defaultImage = "https://www.pngall.com/wp-content/uploads/5/Profile.png";
+
+    // Image Preview
+    document.getElementById("imageInput").addEventListener("change", function(e) {
+
+        const file = e.target.files[0];
+
+        if (file) {
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+
+                document
+                    .getElementById("profilePreview")
+                    .setAttribute("src", event.target.result);
+
+                document.getElementById("removeProfileImage").value = "false";
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+    });
+
+    // Remove Photo
+    document.getElementById("removePhotoBtn").addEventListener("click", function() {
+
+        document
+            .getElementById("profilePreview")
+            .setAttribute("src", defaultImage);
+
+        document.getElementById("imageInput").value = "";
+
+        document.getElementById("removeProfileImage").value = "true";
+
+    });
+
+    // Bootstrap Validation
+    (() => {
+
+        'use strict';
+
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(form => {
+
+            form.addEventListener('submit', event => {
+
+                if (!form.checkValidity()) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                }
+
+                form.classList.add('was-validated');
+
+            }, false);
+
+        });
+
+    })();
+
+</script>
